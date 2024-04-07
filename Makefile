@@ -13,11 +13,14 @@ SRCDIR = src
 # Source files
 SRCS = $(wildcard $(SRCDIR)/*.cpp)
 
+# Header files
+HDRS = $(wildcard $(SRCDIR)/*.hpp)
+
 # Default target
 all: $(EXEC)
 
 # Compile and link
-$(EXEC): $(SRCS)
+$(EXEC): $(SRCS) $(HDRS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(EXEC)
 
 # Clean
