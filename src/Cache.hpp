@@ -1,6 +1,6 @@
 #pragma once
 
-template<typename K, typename V, typename M>
+template<typename K, typename V>
 class Cache {
 public:
     virtual V get(const K& key) = 0;
