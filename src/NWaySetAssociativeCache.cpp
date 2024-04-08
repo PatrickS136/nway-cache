@@ -13,9 +13,9 @@ private:
     int n, s;
     std::vector<T> cacheSets;
     int getHash(const K& key) {
-        // Use std::hash to compute the hash value of the input
         std::hash<K> hasher;
-        return std::abs(static_cast<int>(hasher(key))) % this->n;
+        return 0;
+        // return std::abs(static_cast<int>(hasher(key))) % this->n;
     }
 public:
     NWaySetAssociativeCache(int n, int s) : n(n), s(s) {
@@ -27,15 +27,12 @@ public:
     }
 
     V get(const K& key) override {
-        return V(); // Return default value if not found
+        int index = getHash(key);
+        return cacheSets[index].get(key);
     }
 
     void put(const K& key, const V& value) override {
         int index = getHash(key);
-        std::cout<<cacheSets.size()<<" "<<index<<"\n";
-        // if (cacheSets[index] == nullptr){
-        //     std::cout<<"null\n";
-        // }
         cacheSets[index].put(key, value);
     }
 
@@ -46,5 +43,6 @@ public:
             cacheSets[i].visualizeCacheSet();
             std::cout << "\n";
         }
+        std::cout<<"\n";
     }
 };

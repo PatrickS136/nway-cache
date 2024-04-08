@@ -10,7 +10,17 @@ using namespace std;
 int main(){
     NWaySetAssociativeCache<string, int, LRU<string, int>> * a = new NWaySetAssociativeCache<string, int, LRU<string, int>>(5, 5);
     cout << "Hello World\n";
-    a->put("hello", 12);
+    a->put("a", 12);
+    a->put("b", 13);
+    a->put("c", 14);
+    a->put("d", 15);
+    a->put("e", 16);
+    a->visualizeCacheSets();
+    a->get("a");
+    a->visualizeCacheSets();
+    a->put("f", 17);
+    a->get("a");
+    a->get("b");
     a->visualizeCacheSets();
 
     return 0;

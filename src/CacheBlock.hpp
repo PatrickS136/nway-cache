@@ -13,12 +13,15 @@ public:
         return key;
     }
 
-    V getData() const {
+    V getValue() const {
         return data;
     }
 
-    void setKeyValue(K key, V value) {
+    void setKey(K key) {
         this->key = key;
+    }
+
+    void setValue(V value) {
         this->data = value;
     }
 };

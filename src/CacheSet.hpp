@@ -29,7 +29,7 @@ private:
 public:
     CacheSetItem<K, V> * first;
     CacheSetItem<K, V> * last;
-    std::unordered_map<int, CacheSetItem<K, V>*> cacheMap;
+    std::unordered_map<K, CacheSetItem<K, V>*> cacheMap;
 
     CacheSet(int capacity) {
         this->size = 0;
@@ -40,14 +40,15 @@ public:
         this->last->before = this->first;
     }
 
-    int getSize() { 
-        return this->size;
+    int getCapacity() { 
+        return this->capacity;
     }
 
     void visualizeCacheSet(){
         CacheSetItem<K, V> * current = first->next;
         while (current->content != nullptr) {
-            std::cout << current->content->getKey() << " : " << current->content->getData() << " -> ";
+            std::cout << current->content->getKey() << " : " << current->content->getValue();
+            if (current->next->content != nullptr) std::cout << " -> ";
             current = current->next;
         }
     }

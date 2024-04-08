@@ -25,51 +25,46 @@ private:
 
     // Function to evict the least recently used item from the cache set
     void evict() override {
-        // CacheSetItem<K, V>* lastNode = this->last->before;
-        // removeNode(lastNode);
-        // cacheMap.erase(lastNode->content->getKey());
-        // delete lastNode->content;
-        // delete lastNode;
+        CacheSetItem<K, V>* lastNode = this->last->before;
+        removeNode(lastNode);
+        this->cacheMap.erase(lastNode->content->getKey());
+        delete lastNode->content;
+        delete lastNode;
     }
 public:
     LRU(int size) : CacheSet<K, V>(size) {}
 
     // Override the get method
     V get(const K& key) override {
-        return V();
-        // if (cacheMap.find(key) == cacheMap.end()) {
-        //     return V(); // Key not found, return default value for type V
-        // }
+        if (this->cacheMap.find(key) == this->cacheMap.end()) {
+            std::cout<<"Not found for key : "<< key <<"\n";
+            return V(); // Key not found, return default value for type V
+        }
 
-        // CacheSetItem<K, V>* node = cacheMap[key];
-        // V value = node->content->getValue();
-        // moveToFront(node); // Move the accessed node to the front
-        // return value;
+        CacheSetItem<K, V>* node = this->cacheMap[key];
+        V value = node->content->getValue();
+        moveToFront(node); // Move the accessed node to the front
+        std::cout<<"Found for key : "<< key <<" value : "<< value <<"\n";
+        return value;
     }
 
     // Override the put method
     void put(const K& key, const V& value) override {
-        CacheSetItem<K, V> * newNode = new CacheSetItem<K, V>(key, value);
-        auto temp = this->first->next;
-        this->first->next = newNode;
-        newNode->next = temp;
-        // if (cacheMap.find(key) != cacheMap.end()) {
-        //     // If key already exists, update its value and move it to the front
-        //     CacheSetItem<K, V>* node = cacheMap[key];
-        //     node->content->setValue(value);
-        //     moveToFront(node);
-        // } else {
-        //     // If key doesn't exist, create a new cache block and add it to the front
-        //     if (this->cacheMap.size() == this->getSize()) {
-        //         // If cache is full, evict the least recently used item
-        //         evict();
-        //     }
+        if (this->cacheMap.find(key) != this->cacheMap.end()) {
+            // If key already exists, update its value and move it to the front
+            CacheSetItem<K, V>* node = this->cacheMap[key];
+            node->content->setValue(value);
+            moveToFront(node);
+        } else {
+            // If key doesn't exist, create a new cache block and add it to the front
+            if (this->cacheMap.size() == (unsigned long)this->getCapacity()) {
+                // If cache is full, evict the least recently used item
+                evict();
+            }
 
-        //     CacheBlock<K, V>* block = new CacheBlock<K, V>(key, value);
-        //     CacheSetItem<K, V>* node = new CacheSetItem<K, V>();
-        //     node->content = block;
-        //     addToFront(node);
-        //     cacheMap[key] = node;
-        // }
+            CacheSetItem<K, V>* node = new CacheSetItem<K, V>(key, value);
+            addToFront(node);
+            this->cacheMap[key] = node;
+        }
     }
 };
