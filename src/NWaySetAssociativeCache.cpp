@@ -14,8 +14,7 @@ private:
     std::vector<T> cacheSets;
     int getHash(const K& key) {
         std::hash<K> hasher;
-        return 0;
-        // return std::abs(static_cast<int>(hasher(key))) % this->n;
+        return std::abs(static_cast<int>(hasher(key))) % this->n;
     }
 public:
     NWaySetAssociativeCache(int n, int s) : n(n), s(s) {
